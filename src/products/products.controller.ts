@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, Patch, Delete } from "@nestjs/common";
 import { ProductsService } from "src/products/productsServices/products.service";
 import { Product } from "./Model/Product.Model";
 
@@ -13,11 +13,22 @@ export class ProductsController {
     }
     @Get()
     GetAllProducts() {
+        console.log("hello from one herer");
         return { Products: this.productsService.GetProducts() };
     }
 
     @Get(":id")
     GetProductById(@Param('id') proId: string) {
         this.productsService.GetSingleProduct(proId);
+    }
+    @Patch(":id")
+    UpdateProduct(@Param('id') prodId: string, @Body('product') product: Product) {
+        console.log("hello from pathc");
+        return this.productsService.UpdateProduct(prodId, product);
+    }
+    @Delete(":id")
+    DeleteProduct(@Param('id') proId: string) {
+        console.log("Hello from tests delete");
+        return this.productsService.DeleteProduct(proId);
     }
 }

@@ -22,4 +22,26 @@ export class ProductsService {
         }
         return { ...product };
     }
+
+    UpdateProduct(productId: string, product: Product): any {
+        const productEntity = this.FindProductById(productId);
+        this.products[productEntity.productIndex] = product;
+        console.log(productEntity.product);
+        return this.products[productEntity.productIndex];
+    }
+    DeleteProduct(productId: string) {
+        const productEntity = this.FindProductById(productId);
+        console.log(this.products);
+        this.products.splice(productEntity.productIndex, 1);
+        console.log(this.products);
+        return { StatusCode: "201", Message: "Product was deleted" };
+    }
+    private FindProductById(productId: string): { product: Product, productIndex: number } {
+        const productIndex = this.products.findIndex(a => a.id === productId);
+        const product = this.products[productIndex];
+        if (!product) {
+            throw new NotFoundException('Could not find product');
+        }
+        return { product: product, productIndex: productIndex };
+    }
 }
